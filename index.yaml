@@ -8,6 +8,6 @@ entries:
     home: https://github.com/two-tauers/nfs-provisioner
     name: nfs-provisioner
     urls:
-    - nfs-provisioner-0.0.0.tgz
+    - https://two-tauers.github.io/helm-charts/nfs-provisioner-0.0.0.tgz
     version: 0.0.0
 generated: "2022-04-11T21:38:00.025763168+01:00"
