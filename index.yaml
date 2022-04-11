@@ -3,12 +3,12 @@ entries:
   nfs-provisioner:
   - apiVersion: v1
     appVersion: 0.1.14
-    created: "2022-04-11T23:49:39.67182253+01:00"
+    created: "2022-04-11T22:51:44.16522459Z"
     description: NFS server + storage provisioner
-    digest: c8a5e6d072b199c6002e8cdd07c29ed294ab13f470f8428c9be20b111fb5c82a
+    digest: cf18dc7740e3a8ca9d9ffbf741b5e59e9dac5a844a03fcf5d9e1eacf3a770f1e
     home: https://github.com/two-tauers/nfs-provisioner
     name: nfs-provisioner
     urls:
-    - nfs-provisioner-0.0.0.tgz
-    version: 0.0.0
-generated: "2022-04-11T23:49:39.666983452+01:00"
+    - nfs-provisioner-1.1.2.tgz
+    version: 1.1.2
+generated: "2022-04-11T22:51:44.160543929Z"
