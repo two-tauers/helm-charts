@@ -11,7 +11,6 @@ Once Helm is set up properly, add the repo as follows:
 helm repo add two-tauers https://two-tauers.github.io/helm-charts
 ```
 
-If you had already added this repo earlier, run `helm repo update` to retrieve the latest versions of the packages.
+If you had already added this repo earlier, run `helm repo update two-tauers` to retrieve the latest versions of the packages.
 
 You can then run `helm search repo two-tauers` to see the charts.
-
