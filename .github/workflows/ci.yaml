@@ -6,26 +6,30 @@ on:
     paths:
       - 'charts/**'
 
-env:
-  CT_CONFIGFILE: .github/ct.yaml
-
 jobs:
-  lint-chart:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Run chart-testing (lint)
-        uses: helm/chart-testing-action@v2.2.1
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
         with:
           version: v3.9.1
-  kubeval:
+      - name: Helm lint
+        run: helm lint charts/*
+
+  validate-schema:
     runs-on: ubuntu-latest
+    needs:
+      - lint
     strategy:
       matrix:
         k8s:
-          - v1.22.0
           - v1.23.1
+          - v1.23.9
+          - v1.24.0
+          - v1.24.3
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -37,7 +41,7 @@ jobs:
 
           CHART_DIRS="$(git diff --find-renames --name-only "$(git rev-parse --abbrev-ref HEAD)" remotes/origin/main -- charts | grep '[cC]hart.yaml' | sed -e 's#/[Cc]hart.yaml##g')"
           KUBEVAL_VERSION="0.14.0"
-          SCHEMA_LOCATION="https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/"
+          SCHEMA_LOCATION="https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/"
 
           # install kubeval
           curl --silent --show-error --fail --location --output /tmp/kubeval.tar.gz https://github.com/instrumenta/kubeval/releases/download/"${KUBEVAL_VERSION}"/kubeval-linux-amd64.tar.gz
@@ -46,4 +50,24 @@ jobs:
           # validate charts
           for CHART_DIR in ${CHART_DIRS}; do
             helm template "${CHART_DIR}" | ./kubeval --strict --ignore-missing-schemas --kubernetes-version "${KUBERNETES_VERSION#v}" --schema-location "${SCHEMA_LOCATION}"
+          done
+
+  install-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.9.1
+      - name: Create KIND cluster
+        uses: helm/kind-action@v1.3.0
+      - name: Install charts
+        run: |-
+          for dir in charts/*/; do
+            dir=${dir%*/}
+            chart_name="${dir##*/}"
+            echo "Installing chart '$chart_name'"
+            helm install $chart_name $dir && helm uninstall $chart_name 
           done
