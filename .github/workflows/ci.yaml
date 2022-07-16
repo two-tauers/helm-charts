@@ -21,8 +21,6 @@ jobs:
 
   schema-validation:
     runs-on: ubuntu-latest
-    needs:
-      - lint
     strategy:
       matrix:
         k8s:
@@ -54,6 +52,7 @@ jobs:
 
   install-test:
     needs:
+      - lint
       - schema-validation
     runs-on: ubuntu-latest
     steps:
