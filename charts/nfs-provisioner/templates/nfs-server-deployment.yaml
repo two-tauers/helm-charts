@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-server-pod
+  labels: {{- template "nfs_server_selector" }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- template "nfs_server_selector" }}
+  template:
+    metadata:
+      labels:
+        {{- template "nfs_server_selector" }}
+    spec:
+      nodeSelector: {{- .Values.nfsServer.nodeSelector | toYaml | nindent 8 }}
+      containers:
+        - name: nfs-server-container
+          image: {{ .Values.nfsServer.image }}:{{ .Values.nfsServer.tag | default .Chart.AppVersion }}
+          securityContext:
+            privileged: true
+          args:
+            - {{ .Values.nfsServer.hostPath }}
+          volumeMounts:
+          - name: storage-mount
+            mountPath: {{ .Values.nfsServer.hostPath }}
+          resources:
+            requests:
+              cpu: {{ .Values.nfsServer.resources.requests.cpu }}
+              memory: {{ .Values.nfsServer.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.nfsServer.resources.limits.cpu }}
+              memory: {{ .Values.nfsServer.resources.limits.memory }}
+      volumes:
+      - name: storage-mount
+        hostPath:
+          path: {{ .Values.nfsServer.hostPath }}

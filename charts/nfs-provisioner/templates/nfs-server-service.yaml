@@ -1,0 +1,18 @@
+---
+{{- with index .Values.nfsServer }}
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: nfs-server-service
+spec:
+  selector: {{ template "nfs_server_selector" }}
+  clusterIP: {{ .clusterIP }}
+  ports:
+    - name: tcp-2049
+      port: 2049
+      protocol: TCP
+    - name: udp-111
+      port: 111
+
+{{- end }}

@@ -1,0 +1,56 @@
+---
+# Chart name override
+nameOverride:
+
+# Name of the storage class
+storageClassName: managed-nfs-storage
+
+# NFS server values
+nfsServer:
+  # Cluster IP to share the NFS server on
+  # Must be available
+  clusterIP: 10.43.240.153
+
+  # Run the NFS server on a node with these labels
+  nodeSelector:
+    storage: enabled
+
+  # Path to the drive mounted on the node
+  hostPath: /storage
+
+  # NFS server image
+  # Source: https://github.com/two-tauers/nfs-provisioner/tree/main/docker/nfs-server
+  image: ghcr.io/two-tauers/nfs-server
+
+  # Override NFS server image tag
+  # Uses chart's appVersion by default
+  tag: ""
+
+  # image pull policy
+  pullPolicy: IfNotPresent
+
+  # resource limits for the NFS Server pod
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 1000m
+      memory: 500Mi
+
+# NFS provisioner values
+nfsProvisioner:
+  # Name of the provisioner
+  name: k8s-sigs.io/nfs-subdir-external-provisioner
+
+  # NFS provisioner image
+  # Source: https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner
+  image: k8s.gcr.io/sig-storage/nfs-subdir-external-provisioner
+
+  # NFS provisioner image tag
+  tag: v4.0.2
+
+  # RBAC values
+  rbac:
+    # Name of the service account
+    accountName: nfs-cluster-provisioner
