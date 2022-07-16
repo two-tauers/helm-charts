@@ -19,7 +19,7 @@ jobs:
       - name: Helm lint
         run: helm lint charts/*
 
-  validate-schema:
+  schema-validation:
     runs-on: ubuntu-latest
     needs:
       - lint
@@ -53,6 +53,8 @@ jobs:
           done
 
   install-test:
+    needs:
+      - schema-validation
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
