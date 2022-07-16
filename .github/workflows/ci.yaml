@@ -18,9 +18,8 @@ jobs:
           version: v3.9.1
       - name: Helm lint
         run: |-
-          CHART_DIRS="$(git diff --find-renames --name-only "$(git rev-parse --abbrev-ref HEAD)" remotes/origin/main -- charts | grep '[cC]hart.yaml' | sed -e 's#/[Cc]hart.yaml##g')"
-          for CHART_DIR in ${CHART_DIRS}; do
-            helm lint ${CHART_DIR}
+          for dir in charts/*/; do
+            helm lint $dir
           done
 
   schema-validation:
@@ -39,7 +38,6 @@ jobs:
         run: |-
           set -euo pipefail
 
-          CHART_DIRS="$(git diff --find-renames --name-only "$(git rev-parse --abbrev-ref HEAD)" remotes/origin/main -- charts | grep '[cC]hart.yaml' | sed -e 's#/[Cc]hart.yaml##g')"
           KUBEVAL_VERSION="0.14.0"
           SCHEMA_LOCATION="https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/"
 
@@ -49,8 +47,8 @@ jobs:
 
           # validate charts
           # set "--ignore-missing-schemas" kubeval flag if you're using custom resource definitions
-          for CHART_DIR in ${CHART_DIRS}; do
-            helm template "${CHART_DIR}" | ./kubeval --strict --kubernetes-version "${KUBERNETES_VERSION#v}" --schema-location "${SCHEMA_LOCATION}"
+          for dir in charts/*/; do
+            helm template "$dir" | ./kubeval --strict --kubernetes-version "${KUBERNETES_VERSION#v}" --schema-location "${SCHEMA_LOCATION}"
           done
 
   install-test:
