@@ -1,0 +1,80 @@
+
+name: Lint and Test
+
+on: 
+  pull_request:
+    paths:
+      - 'charts/**'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.9.1
+      - name: Helm lint
+        run: helm lint charts/*
+
+  schema-validation:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        k8s:
+          - v1.23.1
+          - v1.24.0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Run kubeval
+        env:
+          KUBERNETES_VERSION: ${{ matrix.k8s }}
+        run: |-
+          set -euo pipefail
+
+          CHART_DIRS="$(git diff --find-renames --name-only "$(git rev-parse --abbrev-ref HEAD)" remotes/origin/main -- charts | grep '[cC]hart.yaml' | sed -e 's#/[Cc]hart.yaml##g')"
+          KUBEVAL_VERSION="0.14.0"
+          SCHEMA_LOCATION="https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/"
+
+          # install kubeval
+          curl --silent --show-error --fail --location --output /tmp/kubeval.tar.gz https://github.com/instrumenta/kubeval/releases/download/"${KUBEVAL_VERSION}"/kubeval-linux-amd64.tar.gz
+          tar -xf /tmp/kubeval.tar.gz kubeval
+
+          # validate charts
+          # set "--ignore-missing-schemas" kubeval flag if you're using custom resource definitions
+          for CHART_DIR in ${CHART_DIRS}; do
+            helm template "${CHART_DIR}" | ./kubeval --strict --kubernetes-version "${KUBERNETES_VERSION#v}" --schema-location "${SCHEMA_LOCATION}"
+          done
+
+  install-test:
+    needs:
+      - lint
+      - schema-validation
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        k8s:
+          - v1.23.1@sha256:355a1e3b7b0fe315c896f63a73847c554aac8fb8615c6bf47f1ca303009e9a2d
+          - v1.24.0@sha256:8e3b1732d8d1e8b4f74c60d3504abf8472b6884d930d2f14013818cd9ff3f7e2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.9.1
+      - name: Create KIND cluster
+        uses: helm/kind-action@v1.3.0
+        with:
+          node_image: "kindest/node:${{ matrix.k8s }}"
+      - name: Install charts
+        run: |-
+          for dir in charts/*/; do
+            dir=${dir%*/}
+            chart_name="${dir##*/}"
+            echo "Installing chart '$chart_name'"
+            helm install $chart_name $dir && helm uninstall $chart_name 
+          done

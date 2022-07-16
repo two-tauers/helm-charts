@@ -1,0 +1,6 @@
+helm-extra-args: --timeout 600
+check-version-increment: true
+target-branch: main
+debug: true
+chart-repos:
+  - test=https://two-tauers.github.io/helm-charts
