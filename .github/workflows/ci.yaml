@@ -19,9 +19,6 @@ jobs:
       - name: Helm lint
         run: |-
           for dir in charts/*/; do
-            ls -lh charts/
-            ls -lh charts/nfs-provisioner
-            ls -lh $dir
             helm lint $dir
           done
 
