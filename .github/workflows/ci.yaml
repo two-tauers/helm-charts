@@ -31,19 +31,26 @@ jobs:
           python-version: 3.7
 
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2.1.0
+        uses: helm/chart-testing-action@v2.2.1
+        with:
+          version: v3.5.1
+
+      - name: Run chart-testing (list-changed)
+        id: list-changed
+        run: |
+          changed=$(ct list-changed --config .github/ct.yaml)
+          if [[ -n "$changed" ]]; then
+            echo "::set-output name=changed::true"
+          fi
+      - name: Run chart-testing (lint)
+        run: ct lint --config .github/ct.yaml
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.2.0
+        if: steps.list-changed.outputs.changed == 'true'
 
       - name: Run chart-testing (install)
-        run: |
-          changed=$(ct list-changed --config "${CT_CONFIGFILE}")
-          if [[ "$changed" == "charts/enterprise-metrics" ]]; then
-            # Do not run `ct install` for enterprise-metrics
-            exit 0
-          fi
-          ct install --config "${CT_CONFIGFILE}"
+        run: ct install --config .github/ct.yaml
 
   kubeval:
     runs-on: ubuntu-latest
