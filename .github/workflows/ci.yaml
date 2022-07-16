@@ -25,9 +25,7 @@ jobs:
       matrix:
         k8s:
           - v1.23.1
-          - v1.23.9
           - v1.24.0
-          - v1.24.3
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -58,10 +56,8 @@ jobs:
     strategy:
       matrix:
         k8s:
-          - v1.23.1
-          - v1.23.9
-          - v1.24.0
-          - v1.24.3
+          - v1.23.1@sha256:355a1e3b7b0fe315c896f63a73847c554aac8fb8615c6bf47f1ca303009e9a2d
+          - v1.24.0@sha256:8e3b1732d8d1e8b4f74c60d3504abf8472b6884d930d2f14013818cd9ff3f7e2
     steps:
       - name: Checkout
         uses: actions/checkout@v1
