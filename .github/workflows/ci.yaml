@@ -17,7 +17,11 @@ jobs:
         with:
           version: v3.9.1
       - name: Helm lint
-        run: helm lint charts/*
+        run: |-
+          CHART_DIRS="$(git diff --find-renames --name-only "$(git rev-parse --abbrev-ref HEAD)" remotes/origin/main -- charts | grep '[cC]hart.yaml' | sed -e 's#/[Cc]hart.yaml##g')"
+          for CHART_DIR in ${CHART_DIRS}; do
+            helm lint ${CHART_DIR}
+          done
 
   schema-validation:
     runs-on: ubuntu-latest
@@ -72,8 +76,9 @@ jobs:
           node_image: "kindest/node:${{ matrix.k8s }}"
       - name: Install charts
         run: |-
-          for dir in charts/*/; do
-            dir=${dir%*/}
+          CHART_DIRS="$(git diff --find-renames --name-only "$(git rev-parse --abbrev-ref HEAD)" remotes/origin/main -- charts | grep '[cC]hart.yaml' | sed -e 's#/[Cc]hart.yaml##g')"
+          for CHART_DIR in ${CHART_DIRS}; do
+            dir=${CHART_DIR%*/}
             chart_name="${dir##*/}"
             echo "Installing chart '$chart_name'"
             helm install $chart_name $dir && helm uninstall $chart_name 

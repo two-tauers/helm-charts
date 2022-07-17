@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-client-provisioner
+  labels:
+    app: nfs-client-provisioner
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nfs-client-provisioner
+  template:
+    metadata:
+      labels:
+        app: nfs-client-provisioner
+    spec:
+      serviceAccountName: {{ .Values.nfsProvisioner.rbac.accountName }}
+      containers:
+        - name: nfs-client-provisioner
+          image: {{ .Values.nfsProvisioner.image }}:{{ .Values.nfsProvisioner.tag }}
+          volumeMounts:
+            - name: nfs-client-root
+              mountPath: /persistentvolumes
+          env:
+            - name: PROVISIONER_NAME
+              value: {{ .Values.nfsProvisioner.name }}
+            - name: NFS_SERVER
+              value:  {{ .Values.nfsServer.clusterIP }}
+            - name: NFS_PATH
+              value: /
+      volumes:
+        - name: nfs-client-root
+          nfs:
+            server: {{ .Values.nfsServer.clusterIP }}
+            path: /
