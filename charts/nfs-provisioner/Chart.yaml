@@ -4,4 +4,4 @@ name: nfs-provisioner
 description: NFS server + storage provisioner
 version: 1.1.5
 appVersion: "0.1.14"
-home: https://github.com/two-tauers/nfs-provisioner
+home: https://github.com/two-tauers/helm-charts/tree/main/charts/nfs-provisioner
