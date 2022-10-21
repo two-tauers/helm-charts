@@ -1,0 +1,14 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-service
+  labels:
+    app: nas-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: nas-server
+  ports:
+    - port: 445
+      name: tcp-445

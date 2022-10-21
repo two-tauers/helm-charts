@@ -1,0 +1,48 @@
+---
+nameOverride: ""
+fullnameOverride: ""
+
+samba:
+  sharePath: /mnt/nas
+  owner:
+    uid: 2000
+    gid: 2000
+  logLevel: 2
+  timezone: Europe/London
+
+replicaCount: 1
+image:
+  repository: dperson/samba
+  pullPolicy: IfNotPresent
+  imagePullSecrets: []
+  tag: latest
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 2000 # should match linux smbuser GID
+
+containerSecurityContext: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
