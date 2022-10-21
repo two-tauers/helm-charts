@@ -1,6 +1,6 @@
 # Samba server
 
-Helm chart for running Samba share on kubernetes.
+Helm chart for running Samba share on kubernetes. Uses `dperson/samba` container image (source: [github](https://github.com/dperson/samba), [dockerhub](https://hub.docker.com/repository/docker/dperson/samba)) by default.
 
 ## Prerequisites
 
