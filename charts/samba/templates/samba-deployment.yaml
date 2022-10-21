@@ -33,15 +33,19 @@ spec:
           securityContext:
             {{- toYaml .Values.containerSecurityContext | nindent 12 }}
           env:
+            {{- $secretName := include "samba.fullname" . -}}
+            {{ range $i, $s := .Values.samba.users }}
+            {{ $suffix := add1 $i }}
+            - name: USER{{$suffix}}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretName }}
+                  key: USER{{$suffix}}
+            {{ end }}
             - name: TZ
               value: {{ .Values.samba.timezone }}
             - name: GLOBAL
-              value: "log level = {{ .Values.samba.logLevel }}"
-            - name: USER1
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "samba.fullname" . }}
-                  key: USER1
+              value: "log level = {{ .Values.samba.logLevel }}"                  
             - name: SHARE
               value: nas;{{ .Values.samba.sharePath }};yes;no;no;all;none
             - name: USERID
