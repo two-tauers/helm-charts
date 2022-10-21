@@ -9,11 +9,9 @@ samba:
     gid: 2000
   logLevel: 2
   timezone: Europe/London
-  users:
-    - username: smb
-      password: insecure
-    - username: tt
-      password: tt
+  users: []
+    # - username: smb
+    #   password: insecure
 
 replicaCount: 1
 image:
