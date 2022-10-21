@@ -16,3 +16,7 @@ nodes:
         containerPath: /storage
         readOnly: true
         propagation: HostToContainer
+      - hostPath: /tmp
+        containerPath: /mnt/nas
+        readOnly: true
+        propagation: HostToContainer

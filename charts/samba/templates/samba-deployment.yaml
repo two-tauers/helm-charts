@@ -1,0 +1,89 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "samba.fullname" . }}
+  labels:
+    {{- include "samba.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "samba.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "samba.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.image.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "samba.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: nas-server
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            {{- toYaml .Values.containerSecurityContext | nindent 12 }}
+          env:
+            {{- $secretName := include "samba.fullname" . -}}
+            {{ range $i, $s := .Values.samba.users }}
+            {{ $suffix := add1 $i }}
+            - name: USER{{$suffix}}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretName }}
+                  key: USER{{$suffix}}
+            {{ end }}
+            - name: TZ
+              value: {{ .Values.samba.timezone }}
+            - name: GLOBAL
+              value: "log level = {{ .Values.samba.logLevel }}"                  
+            - name: SHARE
+              value: nas;{{ .Values.samba.sharePath }};yes;no;no;all;none
+            - name: USERID
+              value: "{{ .Values.samba.owner.uid }}"
+            - name: GROUPID
+              value: "{{ .Values.samba.owner.gid }}"
+          args: ["-p"]
+          livenessProbe:
+            tcpSocket:
+              port: 445
+          readinessProbe:
+            exec:
+              command:
+              - sh
+              - -c
+              - "ps -ef | egrep -v grep | grep -q smbd"
+          volumeMounts:
+            - name: share-volume
+              mountPath: {{ .Values.samba.sharePath }}
+          ports:
+            - containerPort: 445
+      volumes:
+        - name: share-volume
+          hostPath:
+            path: {{ .Values.samba.sharePath }}
+            type: DirectoryOrCreate
+        - name: users
+          secret:
+            secretName: {{ include "samba.fullname" . }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
