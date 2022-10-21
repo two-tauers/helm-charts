@@ -21,4 +21,15 @@ entries:
     urls:
     - https://github.com/two-tauers/helm-charts/releases/download/nfs-provisioner-1.1.5/nfs-provisioner-1.1.5.tgz
     version: 1.1.5
-generated: "2022-07-20T10:27:19.360722622Z"
+  samba:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-10-21T12:18:22.698455256Z"
+    description: Samba share server for Kubernetes
+    digest: 6475f2936d0a27a283f1cebbcb4b6a26105decb14548c8ebbf5102eb5352bb58
+    name: samba
+    type: application
+    urls:
+    - https://github.com/two-tauers/helm-charts/releases/download/samba-0.1.0/samba-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-10-21T12:18:22.698464056Z"
