@@ -2,13 +2,13 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: {{ .Release.Name }}-service
+  name: {{ include "samba.fullname" . }}
   labels:
-    app: nas-service
+    {{- include "samba.labels" . | nindent 4 }}
 spec:
   type: LoadBalancer
   selector:
-    app: nas-server
+    {{- include "samba.selectorLabels" . | nindent 4 }}
   ports:
     - port: 445
       name: tcp-445
