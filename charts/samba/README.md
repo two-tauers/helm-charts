@@ -9,6 +9,8 @@ Helm chart for running Samba share on kubernetes.
 
 ## Install
 
+The smb user credentials secret is created automatically, there is currently no support for using an existing one. To avoid writing creds to a file, you can supply the values in CLI when installing/upgrading the helm chart, e.g. add `--set "samba.users[0].username=<USERNAME>" --set "samba.users[0].password=<PASSWORD>"`
+
 ### From helm repo
 
 ```
