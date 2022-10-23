@@ -1,0 +1,46 @@
+---
+nameOverride: ""
+fullnameOverride: ""
+
+rsync:
+  sourcePath: /mnt/nas
+  targetPath: /mnt/nas-backup
+  args: -av --delete
+  cron: "*/15 * * * *"
+
+replicaCount: 1
+image:
+  repository: ghcr.io/two-tauers/rsync
+  pullPolicy: IfNotPresent
+  imagePullSecrets: []
+  tag: 2.4
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 2000 # should match linux GID
+
+containerSecurityContext: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

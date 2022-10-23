@@ -1,0 +1,65 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "rsync.fullname" . }}
+  labels:
+    {{- include "rsync.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.rsync.cron | quote }}
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          {{- with .Values.podAnnotations }}
+          annotations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          labels:
+            {{- include "rsync.selectorLabels" . | nindent 12 }}
+        spec:
+          serviceAccountName: {{ include "rsync.serviceAccountName" . }}
+          securityContext:
+            {{- toYaml .Values.podSecurityContext | nindent 12 }}
+          restartPolicy: Never
+          containers:
+            - name: rsync-server
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              args:
+                - sh
+                - -c
+                - rsync {{ .Values.rsync.args }} {{ .Values.rsync.sourcePath }} {{ .Values.rsync.targetPath }}
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              {{- with .Values.image.imagePullSecrets }}
+              imagePullSecrets:
+                {{- toYaml . | nindent 12 }}
+              {{- end }}
+              securityContext:
+                {{- toYaml .Values.containerSecurityContext | nindent 16 }}
+              volumeMounts:
+                - name: source-volume
+                  mountPath: {{ .Values.rsync.sourcePath }}
+                - name: target-volume
+                  mountPath: {{ .Values.rsync.targetPath }}
+          volumes:
+            - name: source-volume
+              hostPath:
+                path: {{ .Values.rsync.sourcePath }}
+                type: DirectoryOrCreate
+            - name: target-volume
+              hostPath:
+                path: {{ .Values.rsync.targetPath }}
+                type: DirectoryOrCreate
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 8 }}
+          {{- end }}
+          {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 8 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 8 }}
+          {{- end }}
