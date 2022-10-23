@@ -1,0 +1,7 @@
+apiVersion: v2
+name: rsync
+description: Local rsync instance
+type: application
+
+version: 0.1.1
+appVersion: "2.4"
