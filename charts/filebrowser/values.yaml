@@ -1,0 +1,52 @@
+---
+nameOverride: ""
+fullnameOverride: ""
+
+filebrowser:
+  sharePath: /mnt/nas
+
+replicaCount: 1
+image:
+  repository: filebrowser/filebrowser
+  pullPolicy: IfNotPresent
+  imagePullSecrets: []
+  tag: latest
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 80
+
+ingress:
+  enable: true
+  baseURL: "/"
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    cpu: 500m
+    memory: 128Mi
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 2000 # should match linux user GID
+
+containerSecurityContext: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
