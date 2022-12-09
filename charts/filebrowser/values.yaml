@@ -4,6 +4,8 @@ fullnameOverride: ""
 
 filebrowser:
   sharePath: /mnt/nas
+  persistence: # for storing the database
+    storageClass: local-path
 
 replicaCount: 1
 image:
