@@ -34,7 +34,7 @@ spec:
             {{- toYaml .Values.containerSecurityContext | nindent 12 }}
           livenessProbe:
             httpGet:
-              path: /
+              path: /health
               port: {{ .Values.service.targetPort }}
           readinessProbe:
             httpGet:
@@ -43,6 +43,11 @@ spec:
           volumeMounts:
             - name: share-volume
               mountPath: /srv
+            - name: database-volume
+              mountPath: /filebrowser-db/
+            - name: config-volume
+              mountPath: /.filebrowser.json
+              subPath: filebrowser
           ports:
             - containerPort: {{ .Values.service.targetPort }}
       volumes:
@@ -50,9 +55,12 @@ spec:
           hostPath:
             path: {{ .Values.filebrowser.sharePath }}
             type: DirectoryOrCreate
-        - name: users
-          secret:
-            secretName: {{ include "filebrowser.fullname" . }}
+        - name: database-volume
+          persistentVolumeClaim:
+            claimName: {{ include "filebrowser.fullname" . }}
+        - name: config-volume
+          configMap:
+            name: {{ include "filebrowser.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

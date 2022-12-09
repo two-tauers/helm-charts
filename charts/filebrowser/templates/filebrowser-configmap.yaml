@@ -12,6 +12,6 @@ data:
       "baseURL": "{{ .Values.ingress.baseURL }}",
       "address": "",
       "log": "stdout",
-      "database": "/database.db",
+      "database": "/filebrowser-db/database.db",
       "root": "/srv"
     }
