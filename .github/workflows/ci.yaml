@@ -82,6 +82,8 @@ jobs:
           for CHART_DIR in ${CHART_DIRS}; do
             dir=${CHART_DIR%*/}
             chart_name="${dir##*/}"
+            echo "Building dependencies for '$chart_name'"
+            helm dependency build
             echo "Installing chart '$chart_name'"
             helm install $chart_name $dir && helm uninstall $chart_name 
           done
