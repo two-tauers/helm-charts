@@ -1,0 +1,9 @@
+dependencies:
+- name: prometheus
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 15.5.4
+- name: promtail
+  repository: https://grafana.github.io/helm-charts
+  version: 6.7.4
+digest: sha256:152e901d4162a02362aa23443a97fa93d043beb88db33a5c1e3c6a2728fd69a5
+generated: "2022-12-09T15:39:01.186001869Z"
