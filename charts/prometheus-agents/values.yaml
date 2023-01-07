@@ -23,7 +23,7 @@ prometheus:
 
   server:
     enabled: true
-    name: agent
+    name: prometheus-agent
 
     defaultFlagsOverride:
     - --config.file=/etc/config/prometheus.yml
