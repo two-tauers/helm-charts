@@ -20,6 +20,19 @@ jobs:
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Setup dependencies
+        run: |-
+          CHART_DIRS="$(git diff --find-renames --name-only "$(git rev-parse --abbrev-ref HEAD)" remotes/origin/main -- charts | grep '[cC]hart.yaml' | sed -e 's#/[Cc]hart.yaml##g')"
+          for CHART_DIR in ${CHART_DIRS}; do
+            dir=${CHART_DIR%*/}
+            chart_name="${dir##*/}"
+            if test -f $dir/setup.sh; then
+              echo "Found $dir/setup.sh, running it..."
+              bash $dir/setup.sh
+            fi
+          done
+
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.4.1
         env:
