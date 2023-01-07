@@ -82,6 +82,10 @@ jobs:
           for CHART_DIR in ${CHART_DIRS}; do
             dir=${CHART_DIR%*/}
             chart_name="${dir##*/}"
+            if test -f $dir/setup.sh; then
+              echo "Found $dir/setup.sh, running it..."
+              bash $dir/setup.sh
+            fi
             echo "Installing chart '$chart_name'"
             helm install $chart_name $dir && helm uninstall $chart_name 
           done
