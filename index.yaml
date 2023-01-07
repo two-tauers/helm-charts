@@ -32,6 +32,25 @@ entries:
     urls:
     - https://github.com/two-tauers/helm-charts/releases/download/nfs-provisioner-1.1.5/nfs-provisioner-1.1.5.tgz
     version: 1.1.5
+  prometheus-agents:
+  - apiVersion: v2
+    created: "2023-01-07T10:00:50.114863988Z"
+    dependencies:
+    - condition: prometheus.enabled
+      name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: ~15.5.3
+    - condition: promtail.enabled
+      name: promtail
+      repository: https://grafana.github.io/helm-charts
+      version: ^6.6.1
+    description: A Helm chart for prometheus agent and promtail
+    digest: 6e30fede3c54d3f12051a31ac7f1c9cd91a8974c27270f6fa736d6b640797617
+    name: prometheus-agents
+    type: application
+    urls:
+    - https://github.com/two-tauers/helm-charts/releases/download/prometheus-agents-0.1.0/prometheus-agents-0.1.0.tgz
+    version: 0.1.0
   samba:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -53,4 +72,4 @@ entries:
     urls:
     - https://github.com/two-tauers/helm-charts/releases/download/samba-0.1.0/samba-0.1.0.tgz
     version: 0.1.0
-generated: "2022-12-09T14:56:51.894606371Z"
+generated: "2023-01-07T10:00:50.11520729Z"
