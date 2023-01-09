@@ -3,5 +3,5 @@ name: cloudflared
 description: Cloudflared agent deployment
 type: application
 
-version: 0.1.0
+version: 1.0.0
 appVersion: "2022.3.0"
