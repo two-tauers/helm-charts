@@ -1,0 +1,49 @@
+---
+nameOverride: ""
+fullnameOverride: ""
+
+cloudflared:
+  secret:
+    name: tunnel-credentials
+  config: # cloudflared agent config
+    tunnel: cloudflared-tunnel
+    credentials-file: /etc/cloudflared/creds/credentials.json
+    metrics: 0.0.0.0:2000
+    no-autoupdate: true
+    ingress:
+    - hostname: test.example.com
+      service: http://myservice.mynamespace.svc.cluster.local:80
+    - service: http_status:404
+
+replicaCount: 1
+image:
+  repository: cloudflare/cloudflared
+  tag: ""
+  pullPolicy: IfNotPresent
+  restartPolicy: Always
+  imagePullSecrets: []
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+containerSecurityContext: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
