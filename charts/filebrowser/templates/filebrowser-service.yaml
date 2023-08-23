@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "filebrowser.labels" . | nindent 4 }}
 spec:
-  type: LoadBalancer
+  type: {{ .Values.service.type }}
   selector:
     {{- include "filebrowser.selectorLabels" . | nindent 4 }}
   ports:
