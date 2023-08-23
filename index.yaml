@@ -14,6 +14,16 @@ entries:
   filebrowser:
   - apiVersion: v2
     appVersion: v2.22.4
+    created: "2023-08-23T16:11:19.165039399Z"
+    description: Filebrowser app for Kubernetes
+    digest: 783530480cd1cb0466ae90373fc1feb24dfcac82cf55940db4c3603f4d93a212
+    name: filebrowser
+    type: application
+    urls:
+    - https://github.com/two-tauers/helm-charts/releases/download/filebrowser-0.2.1/filebrowser-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v2
+    appVersion: v2.22.4
     created: "2022-12-09T14:56:51.894342366Z"
     description: Filebrowser app for Kubernetes
     digest: 4c8d5c859eba5e797feb12970052ff8f2c632899d35ba36fc99615788fa9ce90
@@ -83,4 +93,4 @@ entries:
     urls:
     - https://github.com/two-tauers/helm-charts/releases/download/samba-0.1.0/samba-0.1.0.tgz
     version: 0.1.0
-generated: "2023-01-10T08:54:49.063147808Z"
+generated: "2023-08-23T16:11:19.165051999Z"
