@@ -9,9 +9,11 @@ samba:
     gid: 2000
   logLevel: 2
   timezone: Europe/London
-  users: []
-    # - username: smb
-    #   password: insecure
+  userSecret:
+    create: true
+    users: []
+      # - username: smb
+      #   password: insecure
 
 replicaCount: 1
 image:
@@ -19,6 +21,9 @@ image:
   pullPolicy: IfNotPresent
   imagePullSecrets: []
   tag: latest
+
+service:
+  type: LoadBalancer
 
 resources:
   requests:

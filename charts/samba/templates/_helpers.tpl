@@ -60,3 +60,11 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
+
+
+{{/*
+Name of the secret that contains a list of users
+*/}}
+{{- define "samba.userSecretName" -}}
+{{ include "samba.fullname" . }}-users
+{{- end }}

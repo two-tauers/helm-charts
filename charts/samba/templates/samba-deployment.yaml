@@ -32,20 +32,14 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext:
             {{- toYaml .Values.containerSecurityContext | nindent 12 }}
+          envFrom:
+            - secretRef:
+                name: {{ include "samba.userSecretName" . }}
           env:
-            {{- $secretName := include "samba.fullname" . -}}
-            {{ range $i, $s := .Values.samba.users }}
-            {{ $suffix := add1 $i }}
-            - name: USER{{$suffix}}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $secretName }}
-                  key: USER{{$suffix}}
-            {{ end }}
             - name: TZ
               value: {{ .Values.samba.timezone }}
             - name: GLOBAL
-              value: "log level = {{ .Values.samba.logLevel }}"                  
+              value: "log level = {{ .Values.samba.logLevel }}"
             - name: SHARE
               value: nas;{{ .Values.samba.sharePath }};yes;no;no;all;none
             - name: USERID
