@@ -66,9 +66,6 @@ spec:
           hostPath:
             path: {{ .Values.samba.sharePath }}
             type: DirectoryOrCreate
-        - name: users
-          secret:
-            secretName: {{ include "samba.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
