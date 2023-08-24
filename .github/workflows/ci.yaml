@@ -28,8 +28,7 @@ jobs:
     strategy:
       matrix:
         k8s:
-          - v1.23.1
-          - v1.24.4
+          - v1.27.4
     steps:
       - name: Checkout
         uses: actions/checkout@v1
