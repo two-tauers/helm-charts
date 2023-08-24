@@ -75,6 +75,16 @@ entries:
   samba:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2023-08-24T15:18:03.617464322Z"
+    description: Samba share server for Kubernetes
+    digest: 5ef3e32f7247ea77986ec87343b7f74353942e4d02d8dd6acccbf2c4e5ee77e3
+    name: samba
+    type: application
+    urls:
+    - https://github.com/two-tauers/helm-charts/releases/download/samba-0.2.0/samba-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-10-21T13:37:13.774200164Z"
     description: Samba share server for Kubernetes
     digest: 14c8fe531d8784296e79efd832326c952662a059ac2a9b640112c4343e9f7134
@@ -93,4 +103,4 @@ entries:
     urls:
     - https://github.com/two-tauers/helm-charts/releases/download/samba-0.1.0/samba-0.1.0.tgz
     version: 0.1.0
-generated: "2023-08-23T16:11:19.165051999Z"
+generated: "2023-08-24T15:18:03.617489622Z"
