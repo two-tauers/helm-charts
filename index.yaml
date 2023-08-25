@@ -82,6 +82,17 @@ entries:
     urls:
     - https://github.com/two-tauers/helm-charts/releases/download/prometheus-agents-0.1.0/prometheus-agents-0.1.0.tgz
     version: 0.1.0
+  rsync:
+  - apiVersion: v2
+    appVersion: "2.4"
+    created: "2023-08-25T15:54:03.51063444Z"
+    description: Local rsync instance
+    digest: fd7476cc1cbf6c7b8fb408035f6e42faf4132099ec7398982ada11f572540c61
+    name: rsync
+    type: application
+    urls:
+    - https://github.com/two-tauers/helm-charts/releases/download/rsync-0.1.2/rsync-0.1.2.tgz
+    version: 0.1.2
   samba:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -133,4 +144,4 @@ entries:
     urls:
     - https://github.com/two-tauers/helm-charts/releases/download/samba-0.1.0/samba-0.1.0.tgz
     version: 0.1.0
-generated: "2023-08-25T11:09:26.563701523Z"
+generated: "2023-08-25T15:54:03.510680342Z"
