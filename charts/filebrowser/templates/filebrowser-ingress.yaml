@@ -17,4 +17,7 @@ spec:
                 name: {{ include "filebrowser.fullname" . }}
                 port:
                   number: {{ .Values.service.port }}
+    {{- if .Values.ingress.host }}
+      host: {{ .Values.ingress.host }}
+    {{ end }}
 {{ end }}

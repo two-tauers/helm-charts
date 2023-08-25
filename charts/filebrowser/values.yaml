@@ -23,6 +23,7 @@ service:
 ingress:
   enable: true
   baseURL: "/"
+  host: ""
 
 resources:
   requests:
