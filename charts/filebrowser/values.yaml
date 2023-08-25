@@ -12,7 +12,7 @@ image:
   repository: filebrowser/filebrowser
   pullPolicy: IfNotPresent
   imagePullSecrets: []
-  tag: latest
+  tag: ""
 
 service:
   type: ClusterIP
@@ -23,6 +23,7 @@ service:
 ingress:
   enable: true
   baseURL: "/"
+  host: ""
 
 resources:
   requests:

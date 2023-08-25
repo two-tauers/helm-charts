@@ -3,5 +3,5 @@ name: filebrowser
 description: Filebrowser app for Kubernetes
 type: application
 
-version: 0.2.1
-appVersion: "v2.22.4"
+version: 0.2.2
+appVersion: "v2.24.2"
