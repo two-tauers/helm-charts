@@ -61,8 +61,7 @@ jobs:
     strategy:
       matrix:
         k8s:
-          - v1.23.1@sha256:355a1e3b7b0fe315c896f63a73847c554aac8fb8615c6bf47f1ca303009e9a2d
-          - v1.24.4@sha256:ba6a8a1bc35139cc0947a9269a6db577cf7a6ba37cab8088fd04142546dc0c21
+          - v1.27.3@sha256:9dd3392d79af1b084671b05bcf65b21de476256ad1dcc853d9f3b10b4ac52dde
     steps:
       - name: Checkout
         uses: actions/checkout@v1
