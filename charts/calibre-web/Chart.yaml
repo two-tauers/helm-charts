@@ -1,7 +1,8 @@
+---
 apiVersion: v2
 name: calibre-web
 description: A Helm chart for Calibre Web
 
 type: application
-version: 0.1.1
-appVersion: "0.6.20"
+version: 0.2.0
+appVersion: "0.6.24"
