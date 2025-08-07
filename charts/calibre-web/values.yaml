@@ -7,6 +7,14 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
+env:
+  - name: PUID
+    value: "1001"
+  - name: PGID
+    value: "1001"
+  - name: TZ
+    value: "Europe/London"
+
 pvc:
   config: calibre-web-config
   library: calibre-web-library
