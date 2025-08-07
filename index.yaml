@@ -3,6 +3,16 @@ entries:
   calibre-web:
   - apiVersion: v2
     appVersion: 0.6.24
+    created: "2025-08-07T22:15:37.970017503Z"
+    description: A Helm chart for Calibre Web
+    digest: 2f7101511519c4ba5cec3e4b118a52cb66b31336404eea58f0d5098965c63a28
+    name: calibre-web
+    type: application
+    urls:
+    - https://github.com/two-tauers/helm-charts/releases/download/calibre-web-0.2.1/calibre-web-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v2
+    appVersion: 0.6.24
     created: "2025-08-07T22:12:20.965456439Z"
     description: A Helm chart for Calibre Web
     digest: 08afc7bb0fa718a9e3451713d46a0de46c343c2765e9c50077a6e335ce51fdd3
@@ -175,4 +185,4 @@ entries:
     urls:
     - https://github.com/two-tauers/helm-charts/releases/download/samba-0.1.0/samba-0.1.0.tgz
     version: 0.1.0
-generated: "2025-08-07T22:12:20.965493127Z"
+generated: "2025-08-07T22:15:37.970052809Z"
