@@ -35,7 +35,7 @@ spec:
             {{- toYaml .Values.env | nindent 12 }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: 8083
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -47,6 +47,18 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /books
+              name: library
+            - mountPath: /config
+              name: config
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ .Values.pvc.config }}
+        - name: library
+          persistentVolumeClaim:
+            claimName: {{ .Values.pvc.library }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
